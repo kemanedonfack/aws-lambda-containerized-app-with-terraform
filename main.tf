@@ -18,8 +18,11 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = "*"
+        Effect   = "Allow",
+        Action   = [
+          "lambda:InvokeFunction",
+          "lambda:GetFunctionConfiguration",
+        ],
         Resource = "*"
       }
     ]
@@ -34,7 +37,7 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
 resource "aws_lambda_function" "python-lambda-function" {
   function_name = "python-lambda-function"
   description   = "lambda function from terraform"
-  image_uri     = "625243961866.dkr.ecr.eu-north-1.amazonaws.com/python-test"
+  image_uri     = "625243961866.dkr.ecr.eu-north-1.amazonaws.com/python-test:latest"
   package_type  = "Image"
   architectures = ["x86_64"]
   role          = aws_iam_role.lambda_role.arn
